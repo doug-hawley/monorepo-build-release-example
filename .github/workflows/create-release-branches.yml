@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: release-branches
@@ -31,5 +32,21 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Capture existing release branches
+        run: git branch -r --list 'origin/release/*/v*' | sed 's|^ *||' | sort > /tmp/branches-before.txt
+
       - name: Create release branches for changed projects
         run: ./gradlew createReleaseBranchesForChangedProjects -Pmonorepo.commitRef=HEAD~1
+
+      - name: Trigger release for new branches
+        run: |
+          git fetch --all --prune
+          git branch -r --list 'origin/release/*/v*' | sed 's|^ *||' | sort > /tmp/branches-after.txt
+          NEW_BRANCHES=$(comm -13 /tmp/branches-before.txt /tmp/branches-after.txt)
+          for branch in $NEW_BRANCHES; do
+            branch_name=${branch#origin/}
+            echo "Triggering release workflow for $branch_name"
+            gh workflow run release.yml --ref "$branch_name"
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
