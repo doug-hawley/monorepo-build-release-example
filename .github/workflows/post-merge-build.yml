@@ -1,11 +1,19 @@
-name: Post-Merge Build
+name: Post-Merge Build & Release
 
 on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: post-merge
+  cancel-in-progress: false
+
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,8 +27,16 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Print changed projects
         run: ./gradlew printChangedProjectsFromRef
+
+      - name: Build changed projects
+        run: ./gradlew buildChangedProjectsFromRef
 
       - name: Write changed projects
         run: ./gradlew writeChangedProjectsFromRef
@@ -31,5 +47,21 @@ jobs:
           name: changed-projects
           path: build/monorepo/changed-projects.txt
 
-      - name: Build changed projects
-        run: ./gradlew buildChangedProjectsFromRef
+      - name: Capture existing release branches
+        run: git branch -r --list 'origin/release/*/v*' | sed 's|^ *||' | sort > /tmp/branches-before.txt
+
+      - name: Create release branches for changed projects
+        run: ./gradlew createReleaseBranchesForChangedProjects -Pmonorepo.commitRef=HEAD~1
+
+      - name: Trigger release for new branches
+        run: |
+          git fetch --all --prune
+          git branch -r --list 'origin/release/*/v*' | sed 's|^ *||' | sort > /tmp/branches-after.txt
+          NEW_BRANCHES=$(comm -13 /tmp/branches-before.txt /tmp/branches-after.txt)
+          for branch in $NEW_BRANCHES; do
+            branch_name=${branch#origin/}
+            echo "Triggering release workflow for $branch_name"
+            gh workflow run release.yml --ref "$branch_name"
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
