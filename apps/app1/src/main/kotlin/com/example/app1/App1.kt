@@ -1,0 +1,23 @@
+package com.example.app1
+
+import com.example.module1.UserService
+import com.example.module2.NotificationService
+
+class App1 {
+
+    private val userService = UserService()
+    private val notificationService = NotificationService()
+
+    fun registerAndNotify(name: String, email: String): String {
+        val user = userService.createUser(
+            id = System.nanoTime().toString(),
+            name = name,
+            email = email
+        )
+        val notification = notificationService.send(
+            recipient = user.email,
+            message = "Welcome, ${user.name}!"
+        )
+        return "User ${user.name} registered and notified (notification ${notification.id})"
+    }
+}

@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - 'release/*/v*.x'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract project info from branch
+        id: project-info
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          PREFIX=$(echo "$BRANCH" | sed 's|release/\(.*\)/v.*|\1|')
+          GRADLE_PATH=$(jq -r --arg prefix "$PREFIX" '.[$prefix]' .github/release-prefix-map.json)
+          echo "prefix=$PREFIX" >> "$GITHUB_OUTPUT"
+          echo "gradle_path=$GRADLE_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Build project
+        run: ./gradlew ${{ steps.project-info.outputs.gradle_path }}:build
+
+      - name: Release project
+        run: ./gradlew ${{ steps.project-info.outputs.gradle_path }}:release -Prelease.scope=patch
+
+      - name: Create GitHub Release
+        if: success()
+        run: |
+          PREFIX="${{ steps.project-info.outputs.prefix }}"
+          TAG=$(git describe --tags --abbrev=0 --match "release/${PREFIX}/v*")
+          VERSION=$(echo "$TAG" | sed "s|release/${PREFIX}/v||")
+          gh release create "$TAG" \
+            --title "${PREFIX} v${VERSION}" \
+            --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

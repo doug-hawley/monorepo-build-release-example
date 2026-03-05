@@ -1,0 +1,6 @@
+{
+  "modules-module1": ":modules:module1",
+  "notifications": ":modules:module2",
+  "apps-app1": ":apps:app1",
+  "apps-app2": ":apps:app2"
+}
