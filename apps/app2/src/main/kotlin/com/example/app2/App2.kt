@@ -6,10 +6,18 @@ class App2 {
 
     private val notificationService = NotificationService()
 
-    fun broadcast(recipients: List<String>, message: String): Int {
+    fun broadcast(recipients: List<String>, message: String): BroadcastSummary {
         recipients.forEach { recipient ->
             notificationService.send(recipient, message)
         }
-        return notificationService.countSent()
+        return BroadcastSummary(
+            totalSent = notificationService.countSent(),
+            recipients = recipients
+        )
     }
 }
+
+data class BroadcastSummary(
+    val totalSent: Int,
+    val recipients: List<String>
+)
