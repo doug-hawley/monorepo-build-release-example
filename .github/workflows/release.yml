@@ -44,12 +44,25 @@ jobs:
       - name: Release project
         run: ./gradlew ${{ steps.project-info.outputs.gradle_path }}:release -Prelease.scope=patch
 
+      - name: Read release version
+        id: version
+        run: |
+          GRADLE_PATH="${{ steps.project-info.outputs.gradle_path }}"
+          PROJECT_DIR=$(echo "$GRADLE_PATH" | sed 's|^:||; s|:|/|g')
+          VERSION=$(cat "${PROJECT_DIR}/build/release-version.txt")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Released version: $VERSION"
+
+      - name: Fake publish artifact
+        run: |
+          echo "[FAKE PUBLISH] ${{ steps.project-info.outputs.gradle_path }} version ${{ steps.version.outputs.version }}"
+
       - name: Create GitHub Release
         if: success()
         run: |
           PREFIX="${{ steps.project-info.outputs.prefix }}"
-          TAG=$(git describe --tags --abbrev=0 --match "release/${PREFIX}/v*")
-          VERSION=$(echo "$TAG" | sed "s|release/${PREFIX}/v||")
+          VERSION="${{ steps.version.outputs.version }}"
+          TAG="release/${PREFIX}/v${VERSION}"
           gh release create "$TAG" \
             --title "${PREFIX} v${VERSION}" \
             --generate-notes

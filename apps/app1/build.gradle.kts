@@ -12,6 +12,6 @@ dependencies {
 
 tasks.named("postRelease") {
     doLast {
-        logger.lifecycle("Post-release hook triggered for :apps:app1")
+        logger.lifecycle("[FAKE PUBLISH] :apps:app1 version ${project.version}")
     }
 }
