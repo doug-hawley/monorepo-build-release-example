@@ -1,5 +1,6 @@
 package com.example.module2
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
@@ -34,5 +35,23 @@ class NotificationServiceTest : FunSpec({
         val count = service.countSent()
         // then
         count shouldBe 2
+    }
+
+    test("should reject blank recipient") {
+        // given
+        val service = NotificationService()
+        // when/then
+        shouldThrow<IllegalArgumentException> {
+            service.send(" ", "Hello")
+        }
+    }
+
+    test("should reject blank message") {
+        // given
+        val service = NotificationService()
+        // when/then
+        shouldThrow<IllegalArgumentException> {
+            service.send("user@example.com", " ")
+        }
     }
 })

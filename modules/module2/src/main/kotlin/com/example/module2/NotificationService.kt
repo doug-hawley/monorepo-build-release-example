@@ -7,6 +7,8 @@ class NotificationService {
     private val notifications = mutableListOf<Notification>()
 
     fun send(recipient: String, message: String): Notification {
+        require(recipient.isNotBlank()) { "Recipient must not be blank" }
+        require(message.isNotBlank()) { "Message must not be blank" }
         val notification = Notification(
             id = (notifications.size + 1).toString(),
             recipient = recipient,
