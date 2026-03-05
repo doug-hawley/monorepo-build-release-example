@@ -40,6 +40,15 @@ class UserServiceTest : FunSpec({
         users shouldHaveSize 2
     }
 
+    test("should reject blank id") {
+        // given
+        val service = UserService()
+        // when/then
+        shouldThrow<IllegalArgumentException> {
+            service.createUser(" ", "alice", "alice@example.com")
+        }
+    }
+
     test("should reject blank name") {
         // given
         val service = UserService()

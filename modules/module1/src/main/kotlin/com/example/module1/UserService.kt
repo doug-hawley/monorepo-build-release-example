@@ -7,6 +7,7 @@ class UserService {
     private val users = mutableMapOf<String, User>()
 
     fun createUser(id: String, name: String, email: String): User {
+        require(id.isNotBlank()) { "Id must not be blank" }
         require(name.isNotBlank()) { "Name must not be blank" }
         require(email.contains("@")) { "Email must contain @" }
         val user = User(
