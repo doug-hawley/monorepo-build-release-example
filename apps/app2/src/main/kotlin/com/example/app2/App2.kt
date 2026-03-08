@@ -6,6 +6,10 @@ class App2 {
 
     private val notificationService = NotificationService()
 
+    fun broadcastUrgent(recipients: List<String>, message: String): BroadcastSummary {
+        return broadcast(recipients, "[URGENT] $message")
+    }
+
     fun broadcast(recipients: List<String>, message: String): BroadcastSummary {
         recipients.forEach { recipient ->
             notificationService.send(recipient, message)
