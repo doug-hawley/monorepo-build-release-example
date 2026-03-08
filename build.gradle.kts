@@ -1,11 +1,11 @@
 plugins {
     kotlin("jvm") version "1.9.24" apply false
-    id("io.github.doug-hawley.monorepo-build-release-plugin") version "0.3.3"
+    id("io.github.doug-hawley.monorepo-build-release-plugin") version "0.3.4"
 }
 
 monorepo {
+    primaryBranch = "main"
     build {
-        baseBranch = "main"
         includeUntracked = true
         excludePatterns = listOf(
             ".*\\.md",
@@ -16,7 +16,6 @@ monorepo {
     release {
         globalTagPrefix = "release"
         primaryBranchScope = "minor"
-        releaseBranchPatterns = listOf("^main$", "^release/.*")
     }
 }
 
