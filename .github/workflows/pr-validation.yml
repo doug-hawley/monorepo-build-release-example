@@ -22,7 +22,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Print changed projects
-        run: ./gradlew printChangedProjectsFromBranch
+        run: ./gradlew printChangedProjects
 
       - name: Build changed projects
-        run: ./gradlew buildChangedProjectsFromBranch
+        run: ./gradlew buildChangedProjects

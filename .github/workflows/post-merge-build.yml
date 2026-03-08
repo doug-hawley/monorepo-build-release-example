@@ -33,25 +33,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Print changed projects
-        run: ./gradlew printChangedProjectsFromRef
-
-      - name: Build changed projects
-        run: ./gradlew buildChangedProjectsFromRef
-
-      - name: Write changed projects
-        run: ./gradlew writeChangedProjectsFromRef
-
-      - name: Upload changed projects list
-        uses: actions/upload-artifact@v4
-        with:
-          name: changed-projects
-          path: build/monorepo/changed-projects.txt
+        run: ./gradlew printChangedProjects
 
       - name: Capture existing release branches
         run: git branch -r --list 'origin/release/*/v*' | sed 's|^ *||' | sort > /tmp/branches-before.txt
 
-      - name: Create release branches for changed projects
-        run: ./gradlew createReleaseBranchesForChangedProjects -Pmonorepo.commitRef=HEAD~1
+      - name: Build changed projects and create release branches
+        run: ./gradlew buildChangedProjectsAndCreateReleaseBranches
 
       - name: Trigger release for new branches
         run: |

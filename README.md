@@ -27,7 +27,7 @@ Transitive detection: a change to `common-lib` triggers builds for module1, modu
 
 | Feature | Location |
 |---|---|
-| `baseBranch`, `includeUntracked` | Root `build.gradle.kts` |
+| `primaryBranch`, `includeUntracked` | Root `build.gradle.kts` |
 | Global `excludePatterns` | Root `build.gradle.kts` |
 | Per-project `excludePatterns` | `common-lib`, `apps/app2` |
 | `globalTagPrefix`, `primaryBranchScope` | Root `build.gradle.kts` |
@@ -39,9 +39,8 @@ Transitive detection: a change to `common-lib` triggers builds for module1, modu
 
 | Workflow | Trigger | Tasks |
 |---|---|---|
-| PR Validation | Pull request to `main` | `printChangedProjectsFromBranch`, `buildChangedProjectsFromBranch` |
-| Post-Merge Build | Push to `main` | `printChangedProjectsFromRef`, `writeChangedProjectsFromRef`, `buildChangedProjectsFromRef` |
-| Create Release Branches | Push to `main` | `createReleaseBranchesForChangedProjects` |
+| PR Validation | Pull request to `main` | `printChangedProjects`, `buildChangedProjects` |
+| Post-Merge Build | Push to `main` | `printChangedProjects`, `buildChangedProjectsAndCreateReleaseBranches` |
 | Release | Push to `release/*/v*.x` | `:subproject:build`, `:subproject:release` |
 
 ## Getting Started
@@ -55,10 +54,10 @@ cd monorepo-build-release-example
 ./gradlew build
 
 # See which projects changed (compared to main)
-./gradlew printChangedProjectsFromBranch
+./gradlew printChangedProjects
 
 # Build only changed projects
-./gradlew buildChangedProjectsFromBranch
+./gradlew buildChangedProjects
 ```
 
 ## Release Prefix Mapping
