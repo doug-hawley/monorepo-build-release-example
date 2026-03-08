@@ -14,4 +14,12 @@ object DateUtils {
     fun isWeekend(date: LocalDate): Boolean {
         return date.dayOfWeek.value >= 6
     }
+
+    fun isWeekday(date: LocalDate): Boolean {
+        return !isWeekend(date)
+    }
+
+    fun daysUntil(from: LocalDate, to: LocalDate): Long {
+        return java.time.temporal.ChronoUnit.DAYS.between(from, to)
+    }
 }

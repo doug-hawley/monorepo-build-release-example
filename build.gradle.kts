@@ -15,7 +15,7 @@ monorepo {
     }
     release {
         globalTagPrefix = "release"
-        primaryBranchScope = "minor"
+        primaryBranchScope = "major"
     }
 }
 
