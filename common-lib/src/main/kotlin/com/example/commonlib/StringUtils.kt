@@ -16,6 +16,13 @@ object StringUtils {
         return input.take(maxLength) + "..."
     }
 
+    fun toSnakeCase(input: String): String {
+        return input
+            .replace(Regex("([a-z])([A-Z])"), "$1_$2")
+            .replace(Regex("[\\s-]+"), "_")
+            .lowercase()
+    }
+
     fun slugify(input: String): String {
         return input
             .lowercase()

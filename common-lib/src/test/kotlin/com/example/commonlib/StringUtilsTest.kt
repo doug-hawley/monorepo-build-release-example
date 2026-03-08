@@ -41,6 +41,14 @@ class StringUtilsTest : FunSpec({
         result shouldBe "hi"
     }
 
+    test("should convert camelCase to snake_case") {
+        StringUtils.toSnakeCase("myVariableName") shouldBe "my_variable_name"
+    }
+
+    test("should convert spaces and hyphens to underscores") {
+        StringUtils.toSnakeCase("some-mixed value") shouldBe "some_mixed_value"
+    }
+
     test("should slugify a string") {
         StringUtils.slugify("Hello World!") shouldBe "hello-world"
     }
