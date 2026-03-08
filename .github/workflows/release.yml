@@ -42,7 +42,7 @@ jobs:
         run: ./gradlew ${{ steps.project-info.outputs.gradle_path }}:build
 
       - name: Release project
-        run: ./gradlew ${{ steps.project-info.outputs.gradle_path }}:release -Prelease.scope=patch
+        run: ./gradlew ${{ steps.project-info.outputs.gradle_path }}:release
 
       - name: Read release version
         id: version
