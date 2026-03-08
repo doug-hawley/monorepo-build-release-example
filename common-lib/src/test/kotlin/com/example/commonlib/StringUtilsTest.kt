@@ -40,4 +40,16 @@ class StringUtilsTest : FunSpec({
         // then
         result shouldBe "hi"
     }
+
+    test("should slugify a string") {
+        StringUtils.slugify("Hello World!") shouldBe "hello-world"
+    }
+
+    test("should collapse multiple spaces and hyphens in slug") {
+        StringUtils.slugify("  Too   many   spaces  ") shouldBe "too-many-spaces"
+    }
+
+    test("should strip special characters from slug") {
+        StringUtils.slugify("Café & Résumé") shouldBe "caf-rsum"
+    }
 })

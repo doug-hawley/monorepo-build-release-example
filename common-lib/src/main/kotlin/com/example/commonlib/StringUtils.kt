@@ -15,4 +15,13 @@ object StringUtils {
         }
         return input.take(maxLength) + "..."
     }
+
+    fun slugify(input: String): String {
+        return input
+            .lowercase()
+            .replace(Regex("[^a-z0-9\\s-]"), "")
+            .replace(Regex("\\s+"), "-")
+            .replace(Regex("-+"), "-")
+            .trim('-')
+    }
 }
