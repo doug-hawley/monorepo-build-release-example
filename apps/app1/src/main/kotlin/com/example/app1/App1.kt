@@ -8,6 +8,10 @@ class App1 {
     private val userService = UserService()
     private val notificationService = NotificationService()
 
+    fun greet(name: String): String {
+        return "Hello, $name! Welcome to App1."
+    }
+
     fun registerAndNotify(name: String, email: String): String {
         val user = userService.createUser(
             id = System.nanoTime().toString(),

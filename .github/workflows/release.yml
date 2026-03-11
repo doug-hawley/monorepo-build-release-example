@@ -38,9 +38,6 @@ jobs:
           echo "prefix=$PREFIX" >> "$GITHUB_OUTPUT"
           echo "gradle_path=$GRADLE_PATH" >> "$GITHUB_OUTPUT"
 
-      - name: Build project
-        run: ./gradlew ${{ steps.project-info.outputs.gradle_path }}:build
-
       - name: Release project
         run: ./gradlew ${{ steps.project-info.outputs.gradle_path }}:release
 
