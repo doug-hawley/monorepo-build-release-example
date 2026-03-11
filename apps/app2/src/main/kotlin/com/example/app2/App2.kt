@@ -24,4 +24,7 @@ class App2 {
 data class BroadcastSummary(
     val totalSent: Int,
     val recipients: List<String>
-)
+) {
+    val status: String
+        get() = if (totalSent == recipients.size) "complete" else "partial"
+}
