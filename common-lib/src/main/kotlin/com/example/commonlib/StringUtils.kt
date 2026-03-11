@@ -34,6 +34,10 @@ object StringUtils {
             .joinToString("")
     }
 
+    fun reverse(input: String): String {
+        return input.reversed()
+    }
+
     fun slugify(input: String): String {
         return input
             .lowercase()
