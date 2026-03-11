@@ -32,14 +32,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Print changed projects
-        run: ./gradlew printChangedProjects
-
       - name: Capture existing release branches
         run: git branch -r --list 'origin/release/*/v*' | sed 's|^ *||' | sort > /tmp/branches-before.txt
 
       - name: Build changed projects and create release branches
-        run: ./gradlew buildChangedProjectsAndCreateReleaseBranches
+        run: ./gradlew createReleaseBranches
 
       - name: Trigger release for new branches
         run: |
