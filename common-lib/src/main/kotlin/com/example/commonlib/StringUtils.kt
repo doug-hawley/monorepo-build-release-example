@@ -23,6 +23,17 @@ object StringUtils {
             .lowercase()
     }
 
+    fun toCamelCase(input: String): String {
+        return input
+            .split(Regex("[\\s_-]+"))
+            .filter { it.isNotEmpty() }
+            .mapIndexed { index, word ->
+                if (index == 0) word.lowercase()
+                else word.lowercase().replaceFirstChar { it.uppercase() }
+            }
+            .joinToString("")
+    }
+
     fun slugify(input: String): String {
         return input
             .lowercase()
