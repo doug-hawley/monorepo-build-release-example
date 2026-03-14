@@ -25,4 +25,8 @@ class UserService {
     fun listUsers(): List<User> {
         return users.values.toList()
     }
+
+    fun deleteUser(id: String): Boolean {
+        return users.remove(id) != null
+    }
 }

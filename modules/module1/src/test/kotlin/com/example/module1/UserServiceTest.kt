@@ -49,6 +49,26 @@ class UserServiceTest : FunSpec({
         }
     }
 
+    test("should delete existing user") {
+        // given
+        val service = UserService()
+        service.createUser("1", "alice", "alice@example.com")
+        // when
+        val deleted = service.deleteUser("1")
+        // then
+        deleted shouldBe true
+        service.findUser("1") shouldBe null
+    }
+
+    test("should return false when deleting non-existent user") {
+        // given
+        val service = UserService()
+        // when
+        val deleted = service.deleteUser("999")
+        // then
+        deleted shouldBe false
+    }
+
     test("should reject invalid email") {
         // given
         val service = UserService()
