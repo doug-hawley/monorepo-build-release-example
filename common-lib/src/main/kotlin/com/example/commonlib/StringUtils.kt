@@ -38,6 +38,11 @@ object StringUtils {
         return input.reversed()
     }
 
+    fun isPalindrome(input: String): Boolean {
+        val normalized = input.lowercase().filter { it.isLetterOrDigit() }
+        return normalized == normalized.reversed()
+    }
+
     fun slugify(input: String): String {
         return input
             .lowercase()
