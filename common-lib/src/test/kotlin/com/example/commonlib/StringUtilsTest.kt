@@ -49,6 +49,18 @@ class StringUtilsTest : FunSpec({
         StringUtils.toSnakeCase("some-mixed value") shouldBe "some_mixed_value"
     }
 
+    test("should detect palindromes") {
+        StringUtils.isPalindrome("racecar") shouldBe true
+    }
+
+    test("should detect palindromes ignoring case and non-alphanumeric characters") {
+        StringUtils.isPalindrome("A man, a plan, a canal: Panama") shouldBe true
+    }
+
+    test("should return false for non-palindromes") {
+        StringUtils.isPalindrome("hello") shouldBe false
+    }
+
     test("should slugify a string") {
         StringUtils.slugify("Hello World!") shouldBe "hello-world"
     }
