@@ -36,6 +36,24 @@ class App2Test : FunSpec({
         summary.status shouldBe "complete"
     }
 
+    test("should include message in broadcast summary") {
+        // given
+        val app = App2()
+        // when
+        val summary = app.broadcast(listOf("a@example.com"), "Important update")
+        // then
+        summary.message shouldBe "Important update"
+    }
+
+    test("should include prefixed message in urgent broadcast summary") {
+        // given
+        val app = App2()
+        // when
+        val summary = app.broadcastUrgent(listOf("a@example.com"), "Server down")
+        // then
+        summary.message shouldBe "[URGENT] Server down"
+    }
+
     test("should return empty summary for no recipients") {
         // given
         val app = App2()

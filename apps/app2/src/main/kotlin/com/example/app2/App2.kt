@@ -16,14 +16,16 @@ class App2 {
         }
         return BroadcastSummary(
             totalSent = notificationService.countSent(),
-            recipients = recipients
+            recipients = recipients,
+            message = message
         )
     }
 }
 
 data class BroadcastSummary(
     val totalSent: Int,
-    val recipients: List<String>
+    val recipients: List<String>,
+    val message: String
 ) {
     val status: String
         get() = if (totalSent == recipients.size) "complete" else "partial"
