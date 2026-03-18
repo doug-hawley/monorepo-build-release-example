@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.24" apply false
-    id("io.github.doug-hawley.monorepo-build-release-plugin") version "0.3.7"
+    id("io.github.doug-hawley.monorepo-build-release-plugin") version "0.3.8"
 }
 
 monorepo {
