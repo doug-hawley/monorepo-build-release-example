@@ -2,6 +2,7 @@ package com.example.module2
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 
 class NotificationServiceTest : FunSpec({
@@ -35,6 +36,28 @@ class NotificationServiceTest : FunSpec({
         val count = service.countSent()
         // then
         count shouldBe 2
+    }
+
+    test("should find notifications by recipient") {
+        // given
+        val service = NotificationService()
+        service.send("alice@example.com", "Hello Alice")
+        service.send("bob@example.com", "Hello Bob")
+        service.send("alice@example.com", "Another for Alice")
+        // when
+        val results = service.findByRecipient("alice@example.com")
+        // then
+        results shouldHaveSize 2
+    }
+
+    test("should return empty list for unknown recipient") {
+        // given
+        val service = NotificationService()
+        service.send("alice@example.com", "Hello")
+        // when
+        val results = service.findByRecipient("nobody@example.com")
+        // then
+        results shouldHaveSize 0
     }
 
     test("should reject blank recipient") {

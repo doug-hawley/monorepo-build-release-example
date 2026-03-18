@@ -26,4 +26,8 @@ class NotificationService {
     fun countSent(): Int {
         return notifications.count { it.sent }
     }
+
+    fun findByRecipient(recipient: String): List<Notification> {
+        return notifications.filter { it.recipient == recipient }
+    }
 }
