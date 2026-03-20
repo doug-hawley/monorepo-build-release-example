@@ -10,6 +10,10 @@ class App2 {
         return broadcast(recipients, "[URGENT] $message")
     }
 
+    fun broadcastToGroup(groupName: String, recipients: List<String>, message: String): BroadcastSummary {
+        return broadcast(recipients, "[$groupName] $message")
+    }
+
     fun broadcast(recipients: List<String>, message: String): BroadcastSummary {
         recipients.forEach { recipient ->
             notificationService.send(recipient, message)
