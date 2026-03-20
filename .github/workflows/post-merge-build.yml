@@ -36,7 +36,7 @@ jobs:
         run: git branch -r --list 'origin/release/*/v*' | sed 's|^ *||' | sort > /tmp/branches-before.txt
 
       - name: Build changed projects and create release branches
-        run: ./gradlew createReleaseBranches
+        run: ./gradlew createReleaseBranchesForChangedProjects
 
       - name: Trigger release for new branches
         run: |
