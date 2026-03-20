@@ -17,6 +17,17 @@ class App2Test : FunSpec({
         summary.recipients shouldHaveSize 3
     }
 
+    test("should broadcast to group with group name prefix") {
+        // given
+        val app = App2()
+        val recipients = listOf("dev1@example.com", "dev2@example.com")
+        // when
+        val summary = app.broadcastToGroup("engineering", recipients, "Deploy complete")
+        // then
+        summary.totalSent shouldBe 2
+        summary.recipients shouldHaveSize 2
+    }
+
     test("should return empty summary for no recipients") {
         // given
         val app = App2()
