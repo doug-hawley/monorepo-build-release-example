@@ -22,6 +22,10 @@ class UserService {
         return users[id]
     }
 
+    fun findByEmail(email: String): User? {
+        return users.values.find { it.email == email.lowercase() }
+    }
+
     fun listUsers(): List<User> {
         return users.values.toList()
     }

@@ -29,6 +29,26 @@ class UserServiceTest : FunSpec({
         user?.name shouldBe "John"
     }
 
+    test("should find user by email") {
+        // given
+        val service = UserService()
+        service.createUser("1", "alice", "Alice@Example.com")
+        // when
+        val user = service.findByEmail("alice@example.com")
+        // then
+        user shouldNotBe null
+        user?.name shouldBe "Alice"
+    }
+
+    test("should return null for unknown email") {
+        // given
+        val service = UserService()
+        // when
+        val user = service.findByEmail("nobody@example.com")
+        // then
+        user shouldBe null
+    }
+
     test("should list all users") {
         // given
         val service = UserService()
