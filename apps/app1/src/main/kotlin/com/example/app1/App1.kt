@@ -12,6 +12,10 @@ class App1 {
         return "Hello, $name! Welcome to App1."
     }
 
+    fun goodbye(name: String): String {
+        return "Goodbye, $name! Thanks for using App1."
+    }
+
     fun registerAndNotify(name: String, email: String): String {
         val user = userService.createUser(
             id = System.nanoTime().toString(),
